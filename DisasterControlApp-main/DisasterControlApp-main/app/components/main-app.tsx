@@ -21,6 +21,49 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { Card, CardContent } from "@/components/ui/card"
 import StatsDashboard from "./stats-dashboard"
+import { useState } from 'react';
+
+import {
+  Webchat,
+  WebchatProvider,
+  Fab,
+  getClient,
+  Configuration,
+} from '@botpress/webchat';
+
+const clientId = "debd627b-83ea-4b24-95b9-044a498773e0";
+
+const configuration: Configuration = {
+  color: '#000',
+};
+
+export default function App() {
+  const client = getClient({
+    clientId,
+  });
+
+  const [isWebchatOpen, setIsWebchatOpen] = useState(false);
+
+  const toggleWebchat = () => {
+    setIsWebchatOpen((prevState) => !prevState);
+  };
+
+  return (
+    <div style={{ width: '100vw', height: '100vh' }}>
+      <WebchatProvider client={client} configuration={configuration}>
+        <Fab onClick={toggleWebchat} />
+        <div
+          style={{
+            display: isWebchatOpen ? 'block' : 'none',
+          }}
+        >
+          <Webchat />
+        </div>
+      </WebchatProvider>
+    </div>
+  );
+}
+
 
 interface WeatherWarning {
   id: number
